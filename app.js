@@ -26,17 +26,9 @@ const itemsSchema = {
 
 const Item = mongoose.model("Task", itemsSchema);
 
-const buyFood = new Item({
-    name: "Buy Food"
-});
-const cookFood = new Item({
-    name: "Cook Food"
-});
-const eatFood = new Item({
-    name: "Eat Food"
-});
-
-const defaultItems = [buyFood, cookFood, eatFood];
+const defaultTask = [new Item({
+    name: "work =)"
+})];
 
 const listSchema = {
     name: String,
@@ -52,7 +44,7 @@ app.get("/", function (req, res) {
     Item.find({}, function (err, foundItems) {
 
         if (foundItems.length === 0) {
-            Item.insertMany(defaultItems, function (err) {
+            Item.insertMany(defaultTask, function(err) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -79,7 +71,7 @@ app.get("/:route", function (req, res) {
         if (!result) {
             const list = new List({
                 name: customRoute,
-                items: defaultItems
+                items: defaultTask
             });
             list.save();
             res.redirect("/" + customRoute);
@@ -96,11 +88,6 @@ app.post("/", function (req, res) {
 
     const item = req.body.nextItem;
     const listName = req.body.list;
-
-    /* if(Object.keys(item).length === 0){
-      console.log(item + " is empty");
-      return false;
-      }; */
 
 
     const newTask = new Item({
